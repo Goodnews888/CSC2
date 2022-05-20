@@ -15,11 +15,11 @@ def quit():
 def print_camp_details ():
     global j_names, total_entries, name_count
     name_count = 0
-    Label(frame, font='bold',text="Row").grid(column=0,row=7)
+    Label(frame, font='bold',text="Row").grid(column=0,row=7, columnspan = 1)
     Label(frame, font='bold',text="Leader").grid(column=1,row=7)
-    Label(frame, font='bold',text="Location").grid(column=2,row=7)
+    Label(frame, font='bold',text="Location").grid(column=2,row=7, columnspan = 1)
     Label(frame, font='bold',text="Number of Campers").grid(column=3,row=7)
-    Label(frame, font='bold',text="Weather").grid(column=4,row=7)
+    Label(frame, font='bold',text="Weather").grid(column=4,row=7, columnspan =1)
     frame.grid(column =0, row = 7, columnspan = 4, rowspan = 10)
 
     while name_count < total_entries :
@@ -46,7 +46,7 @@ def append_name ():
 def delete_row ():
     global camp_details, delete_item, total_entries, name_count
     Button(main_window, text="Delete",command=delete_row) .grid(column=2,row=6)
-
+    Label(main_window, text="Row #") .grid(column=0,row=6)
     try:
         del camp_details[int(delete_item.get())]
         total_entries = total_entries - 1
@@ -57,31 +57,44 @@ def delete_row ():
         frame.pack_forget()
         print_camp_details()
     except:
-        Button(main_window, text="Delete",command=delete_row, fg = "red") .grid(column=2,row=6)
+        Label(main_window, text="Row #", bg = "red") .grid(column=0,row=6)
 
 #create the buttons and labels
 def setup_buttons():
-    global camp_details, entry_leader,entry_location,entry_campers,entry_weather, total_entries, delete_item, weather
-    Button(main_window, text="Quit",command=quit) .grid(column=1, row=0)
-    Button(main_window, text="Append Details",command=check_validity) .grid(column=0,row=1)
-    Button(main_window, text="Print Details",command=print_camp_details) .grid(column=1,row=1)
+    global camp_details, entry_leader,entry_location,entry_campers,entry_weather, total_entries, delete_item, weather, frame2
+    Button(main_window, text="Quit",command=quit) .grid(column=2, row=0, sticky = E)
+    Button(main_window, text="Update",command=check_validity) .grid(column=1,row=1)
     Label(main_window, text="Leader") .grid(column=0,row=2)
+
+    #Entry for Leader
     entry_leader = Entry(main_window)
     entry_leader.grid(column=1,row=2)
     Label(main_window, text="Location") .grid(column=0,row=3)
+    
+    #Title
+    Label(main_window, text= "Sunshine Adventure", font =(('Aerial'), 12)).grid(column=0, row = 0)
+    Label(main_window, text = "Camp", font = (('Aerial'), 12)).grid(column=0, row = 1)
+
+    #Entry for Location
     entry_location = Entry(main_window)
     entry_location.grid(column=1,row=3)
     Label(main_window, text="Number of Campers") .grid(column=0,row=4)
+
+    #Entry for Campers
     entry_campers = Entry(main_window)
     entry_campers.grid(column=1,row=4)
     Label(main_window, text="Weather") .grid(column=0,row=5)
+
+    #Combobox for Weather
     weather = StringVar()
     entry_weather = ttk.Combobox(main_window, textvariable = weather, state = 'readonly',
     values = ('Sunny', 'Cloudy', 'Stormy', 'Rainy', 'Snowy', 'Misty'))
     entry_weather.grid(column=1,row=5)
+
+    #Constructing the Row # & Delete button.
     Label(main_window, text="Row #") .grid(column=0,row=6)
     delete_item = Entry(main_window)
-    delete_item .grid(column=1,row=6)
+    delete_item.grid(column=1,row=6)
     Button(main_window, text="Delete",command=delete_row) .grid(column=2,row=6)
 
 def check_validity ():
@@ -90,9 +103,9 @@ def check_validity ():
     Label(main_window, text = "Number of Campers").grid(column = 0, row = 4)
     Label(main_window, text = "Weather").grid(column = 0, row = 5)
     if len(entry_leader.get()) != 0 and entry_campers.get().isdigit() and len(entry_weather.get()) != 0 and len(entry_location.get()) != 0:
-        if int(entry_campers.get()) >= 10 and int(entry_campers.get()) <= 15:
+        if int(entry_campers.get()) >= 5 and int(entry_campers.get()) <= 10:
             append_name()
-               
+            print_camp_details()
         else:
             Label(main_window, text = "Number of Campers", bg = "red").grid(column = 0, row = 4 ) 
                 
