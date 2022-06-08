@@ -1,0 +1,2 @@
+fmt:
+	pylint --recursive=y .
